@@ -1,4 +1,13 @@
-import { VStack, Box, Text, Grid, GridItem, Image } from "@chakra-ui/react";
+import {
+  VStack,
+  Box,
+  Text,
+  Grid,
+  GridItem,
+  Image,
+  Divider,
+  Heading,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { charactersList, comicsList, eventsList } from "../api";
 import SkewBox from "../components/SkewBox";
@@ -53,7 +62,7 @@ export default function Home() {
     eventsList
   );
 
-  console.log(eventsListData);
+  console.log(characterListData);
   return (
     <VStack w="full" spacing={10} mb={16}>
       <Slider />
@@ -73,10 +82,11 @@ export default function Home() {
             }}
             gap={3}
             gridAutoFlow="row dense"
+            position="relative"
           >
             {characterListData?.data?.results.map((data) => (
-              <GridItem>
-                <VStack spacing={3} position="relative">
+              <GridItem role="group">
+                <VStack spacing={3}>
                   <Box
                     w="20"
                     h="20"
@@ -93,19 +103,41 @@ export default function Home() {
                     />
                   </Box>
                   <Box
-                    position="absolute"
-                    bottom={-2}
-                    bg="red.500"
+                    transform={"translateY(-18px)"}
+                    bg="gray.800"
                     px="2"
                     py="0.5"
                     rounded="md"
                     color="white"
+                    transition="0.4s"
+                    _groupHover={{
+                      background: "red.500",
+                    }}
                   >
                     <Text fontWeight={"600"} fontSize="10px">
                       {data.name.substr(0, 6)}
                     </Text>
                   </Box>
                 </VStack>
+                <Box
+                  position={"absolute"}
+                  bottom="6"
+                  left="0"
+                  opacity="0"
+                  transition="0.4s"
+                  _groupHover={{
+                    opacity: "1",
+                  }}
+                >
+                  <VStack
+                    h="40px"
+                    alignItems={"flex-start"}
+                    justifyContent="flex-start"
+                  >
+                    {/* <Heading fontSize={20}>Description</Heading> */}
+                    <Text color="gray.700">{data.description};</Text>
+                  </VStack>
+                </Box>
               </GridItem>
             ))}
           </Grid>
@@ -152,6 +184,7 @@ export default function Home() {
                 <VStack spacing={4} role="group">
                   <Box
                     w="40"
+                    transition={"0.4s"}
                     _groupHover={{
                       transform: "translateY(-15px)",
                     }}
@@ -253,7 +286,7 @@ export default function Home() {
                       left="0"
                       w="full"
                       h="full"
-                      bg="gray.400"
+                      bg="red.500"
                       opacity="0"
                       transform="rotateY(180deg)"
                       transition="0.4s"
@@ -261,7 +294,14 @@ export default function Home() {
                         transform: "rotateY(360deg)",
                         opacity: "1",
                       }}
-                    ></Box>
+                    >
+                      <VStack p="4" alignItems={"flex-start"}>
+                        <Text fontWeight={"600"} color="white">
+                          Details
+                        </Text>
+                        <Divider />
+                      </VStack>
+                    </Box>
                   </Box>
 
                   <VStack alignItems={"flex-start"} w="95%" spacing={0}>
