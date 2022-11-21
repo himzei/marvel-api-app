@@ -42,8 +42,10 @@ interface IComicsResult {
 }
 
 export default function Home() {
-  const { data: characterListData, isLoading: characterListIsLoading } =
-    useQuery<IComicsResult>(["characterList"], charactersList);
+  const { data: characterListData } = useQuery<IComicsResult>(
+    ["characterList"],
+    charactersList
+  );
 
   const { data: comicsListData } = useQuery<IComicsResult>(
     ["comicsList"],
