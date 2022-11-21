@@ -6,7 +6,6 @@ import {
   GridItem,
   Image,
   Divider,
-  Heading,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { charactersList, comicsList, eventsList } from "../api";
