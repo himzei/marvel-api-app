@@ -41,7 +41,7 @@ export default function Header() {
             </Box>
           </Link>
           <HStack spacing="4">
-            <Link to="/inbound">
+            <Link to="/characters">
               <Text>characters</Text>
             </Link>
             <Link to="/outbound">

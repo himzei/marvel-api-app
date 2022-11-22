@@ -68,7 +68,7 @@ export default function Home() {
     seriesList
   );
 
-  console.log(comicsListData);
+  console.log(characterListData);
   return (
     <>
       <SliderSection />
@@ -91,7 +91,7 @@ export default function Home() {
             position="relative"
           >
             {characterListData?.data?.results.map((data) => (
-              <Link to={"#"}>
+              <Link to={`/character/${data.id}`}>
                 <GridItem role="group">
                   <VStack spacing={3}>
                     <Box

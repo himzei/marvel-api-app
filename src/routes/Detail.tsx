@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { detail } from "../api";
+import { detail, detailCharacters } from "../api";
 
 export interface ICharactersItems {
   name: string;
@@ -77,10 +77,39 @@ export interface IDetail {
   data: IDataResult;
 }
 
+interface ICharItems {
+  id: number;
+  modified: string;
+  name: string;
+  thumbnail: IImage;
+}
+interface ICharResult {
+  offset: number;
+  limit: number;
+  total: number;
+  count: number;
+  results: ICharItems[];
+}
+
+interface ICharacter {
+  code: number;
+  status: string;
+  copyright: string;
+  attributionText: string;
+  attributionHTML: string;
+  etag: string;
+  data: ICharResult;
+}
+
 export default function Detail() {
   const { id } = useParams();
   const { data, isLoading } = useQuery<IDetail>(["Detail", id], detail);
-  console.log(data, isLoading);
+  const { data: dataCharacter } = useQuery<ICharacter>(
+    ["DetailCharacter", id],
+    detailCharacters
+  );
+
+  console.log(dataCharacter, dataCharacter);
 
   return (
     <>
@@ -162,6 +191,39 @@ export default function Detail() {
           </Box>
         </Box>
       </VStack>
+
+      <VStack w="full" h="auto" bg="gray.700" alignItems="center" py={16}>
+        <VStack w="6xl" alignItems={"flex-start"}>
+          <Text
+            color="gray.100"
+            textTransform={"uppercase"}
+            fontSize={24}
+            fontWeight="600"
+            mb="4"
+          >
+            the Characters
+          </Text>
+
+          <HStack spacing={4} h="200px">
+            {dataCharacter?.data.results.map((item) => (
+              <VStack justifyContent={"flex-start"} w="full" h="full">
+                <Box w="24" h="24" overflow={"hidden"} rounded="full">
+                  <Image
+                    w="24"
+                    h="24"
+                    objectFit={"cover"}
+                    src={`${item.thumbnail.path}.${item.thumbnail.extension}`}
+                  />
+                </Box>
+                <Text w="24" color="gray.100" textAlign={"center"}>
+                  {item.name}
+                </Text>
+              </VStack>
+            ))}
+          </HStack>
+        </VStack>
+      </VStack>
+
       <VStack w="full" h="auto" bg="gray.700" alignItems={"center"} py={16}>
         <VStack w="6xl" alignItems={"flex-start"}>
           <Text
@@ -185,6 +247,7 @@ export default function Detail() {
           </VStack>
         </VStack>
       </VStack>
+
       <VStack w="full" h="auto" bg="gray.700" alignItems={"center"} py={16}>
         <VStack w="6xl" alignItems={"flex-start"}>
           <Text

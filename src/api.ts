@@ -1,14 +1,21 @@
 const BASE_PATH = "https://gateway.marvel.com:443";
 
 // 개인키
-// const API_KEY = "1f2be9e5633db8ee3608691d7e342629";
+const API_KEY = "1f2be9e5633db8ee3608691d7e342629";
 
 // 다른사람 키
-const API_KEY = "61168dc591cd40d37da9b851a5bc569b";
+// const API_KEY = "61168dc591cd40d37da9b851a5bc569b";
 
 export async function charactersList() {
   return await fetch(
     `${BASE_PATH}/v1/public/characters?orderBy=name&limit=12&apikey=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+// 큰 카테고리
+export async function charactersData() {
+  return await fetch(
+    `${BASE_PATH}/v1/public/characters?orderBy=-modified&limit=24&apikey=${API_KEY}`
   ).then((response) => response.json());
 }
 
@@ -32,8 +39,15 @@ export async function seriesList() {
 
 export async function detail(id: any) {
   const comicId = id.queryKey[1];
-  console.log(comicId);
   return await fetch(
     `${BASE_PATH}/v1/public/comics/${comicId}?apikey=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+export async function detailCharacters(id: any) {
+  const comicId = id.queryKey[1];
+  console.log(comicId);
+  return await fetch(
+    `${BASE_PATH}/v1/public/comics/${comicId}/characters?apikey=${API_KEY}`
   ).then((response) => response.json());
 }
