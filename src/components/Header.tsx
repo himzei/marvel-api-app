@@ -1,7 +1,17 @@
-import { Stack, HStack, Text, Box, Image } from "@chakra-ui/react";
+import {
+  Stack,
+  HStack,
+  Text,
+  Box,
+  Image,
+  IconButton,
+  useColorMode,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 
 export default function Header() {
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Stack
       w="100%"
@@ -25,9 +35,11 @@ export default function Header() {
           fontSize={16}
           textTransform="uppercase"
         >
-          <Box w="24">
-            <Image src="https://seeklogo.com/images/M/Marvel_Comics-logo-D489AEB9C1-seeklogo.com.png" />
-          </Box>
+          <Link to="/">
+            <Box w="24">
+              <Image src="https://seeklogo.com/images/M/Marvel_Comics-logo-D489AEB9C1-seeklogo.com.png" />
+            </Box>
+          </Link>
           <HStack spacing="4">
             <Link to="/inbound">
               <Text>characters</Text>
@@ -50,7 +62,14 @@ export default function Header() {
           </HStack>
         </HStack>
         <HStack>
-          <Text></Text>
+          <IconButton
+            onClick={toggleColorMode}
+            variant="ghost"
+            aria-label="Toggle dark mode"
+            icon={
+              colorMode === "light" ? <BsFillSunFill /> : <BsFillMoonFill />
+            }
+          />
         </HStack>
       </HStack>
     </Stack>

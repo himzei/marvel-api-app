@@ -6,11 +6,13 @@ import {
   GridItem,
   Image,
   Divider,
+  HStack,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { charactersList, comicsList, eventsList } from "../api";
+import { Link } from "react-router-dom";
+import { charactersList, comicsList, eventsList, seriesList } from "../api";
 import SkewBox from "../components/SkewBox";
-import Slider from "../components/Slider";
+import SliderSection from "../components/SliderSection";
 
 export interface IThumbnail {
   path: string;
@@ -20,7 +22,7 @@ export interface IThumbnail {
 export interface IResults {
   id: number;
   title: string;
-
+  type: string;
   name: string;
   description: string;
   modified: string;
@@ -61,13 +63,18 @@ export default function Home() {
     eventsList
   );
 
-  console.log(characterListData);
+  const { data: seriesListData } = useQuery<IComicsResult>(
+    ["seriesList"],
+    seriesList
+  );
+
+  console.log(comicsListData);
   return (
-    <VStack w="full" spacing={10} mb={16}>
-      <Slider />
+    <>
+      <SliderSection />
 
       {/* Section Characters */}
-      <VStack w="full">
+      <VStack w="full" mb={16} mt={12}>
         <VStack w="6xl" alignItems={"center"} justifyContent="flex-start">
           <Grid
             height="180px"
@@ -79,7 +86,7 @@ export default function Home() {
               xl: "repeat(10, 1fr)",
               "2xl": "repeat(12, 1fr)",
             }}
-            gap={3}
+            gap={4}
             gridAutoFlow="row dense"
             position="relative"
           >
@@ -179,43 +186,47 @@ export default function Home() {
             gridAutoFlow="row dense"
           >
             {comicsListData?.data?.results.map((data) => (
-              <GridItem>
-                <VStack spacing={4} role="group">
-                  <Box
-                    w="40"
-                    transition={"0.4s"}
-                    _groupHover={{
-                      transform: "translateY(-15px)",
-                    }}
-                    h="64"
-                    overflow={"hidden"}
-                    rounded="lg"
-                    bg="red.500"
-                  >
-                    <Image
-                      h="full"
-                      objectFit={"cover"}
-                      objectPosition="center"
-                      src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
-                    />
-                  </Box>
+              <Link to={`/${data.id}`}>
+                <GridItem>
+                  <VStack spacing={4} role="group">
+                    <Text>{data.id}</Text>
 
-                  <VStack alignItems={"flex-start"} w="90%" spacing={0}>
-                    <Text
-                      fontWeight={"600"}
-                      color="gray.800"
-                      letterSpacing={"-1px"}
-                      lineHeight={"20px"}
+                    <Box
+                      w="40"
+                      transition={"0.4s"}
                       _groupHover={{
-                        color: "red.400",
+                        transform: "translateY(-15px)",
                       }}
+                      h="64"
+                      overflow={"hidden"}
+                      rounded="lg"
+                      bg="red.500"
                     >
-                      {data.title}
-                    </Text>
-                    <Text color="gray.500">{data.modified.substr(0, 4)}</Text>
+                      <Image
+                        h="full"
+                        objectFit={"cover"}
+                        objectPosition="center"
+                        src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
+                      />
+                    </Box>
+
+                    <VStack alignItems={"flex-start"} w="90%" spacing={0}>
+                      <Text
+                        fontWeight={"600"}
+                        color="gray.800"
+                        letterSpacing={"-1px"}
+                        lineHeight={"20px"}
+                        _groupHover={{
+                          color: "red.400",
+                        }}
+                      >
+                        {data.title}
+                      </Text>
+                      <Text color="gray.500">{data.modified.substr(0, 4)}</Text>
+                    </VStack>
                   </VStack>
-                </VStack>
-              </GridItem>
+                </GridItem>
+              </Link>
             ))}
           </Grid>
         </VStack>
@@ -231,7 +242,7 @@ export default function Home() {
       </VStack>
 
       {/* Section3 Evets List */}
-      <VStack w="full" position="relative" h="400px">
+      <VStack w="full" position="relative" h="300px">
         <VStack
           w="6xl"
           bg="white"
@@ -325,6 +336,85 @@ export default function Home() {
           </Grid>
         </VStack>
       </VStack>
-    </VStack>
+
+      {/* Section4 Series List */}
+      <VStack w="full" alignItems={"center"} h="auto">
+        <VStack w="6xl" alignItems={"flex-start"}>
+          <Box
+            w="2px"
+            h="80px"
+            mb="10"
+            transform="rotate(45deg) translateX(50px)"
+            position="relative"
+          >
+            <Box
+              bg="white"
+              py={0.5}
+              px={2}
+              transform="rotate(-45deg)"
+              w="40"
+              position="absolute"
+              left="-50px"
+              top="-10px"
+            >
+              <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
+                the Series
+              </Text>
+            </Box>
+          </Box>
+          <VStack>
+            {seriesListData?.data?.results.map((data) => (
+              <>
+                <HStack w="full" h="full" spacing="8">
+                  <Box
+                    w="410px"
+                    h="220px"
+                    overflow={"hidden"}
+                    rounded="lg"
+                    position="relative"
+                  >
+                    <Image
+                      transform="rotateY(360deg)"
+                      opacity="1"
+                      transition="0.4s"
+                      _groupHover={{
+                        transform: "rotateY(180deg)",
+                        opacity: 0,
+                      }}
+                      w="full"
+                      objectFit={"cover"}
+                      objectPosition="center"
+                      src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
+                    />
+                  </Box>
+                  <VStack
+                    h="220px"
+                    spacing="0"
+                    alignItems={"flex-start"}
+                    justifyContent="flex-start"
+                  >
+                    <Text
+                      color="gray.500"
+                      textTransform={"uppercase"}
+                      fontSize="14px"
+                      fontWeight={600}
+                    >
+                      {data.type ? data.type : "No Type"}
+                    </Text>
+                    <Text fontWeight={600} fontSize={20} color="gray.700">
+                      {data.title}
+                    </Text>
+                    <Text>{data.modified.substr(0, 10)}</Text>
+                  </VStack>
+                </HStack>
+                <Box h="4" w="full" display={"flex"} alignItems="center">
+                  <Box h="1px" w="full" bg="gray.500" />
+                </Box>
+              </>
+            ))}
+          </VStack>
+        </VStack>
+      </VStack>
+    </>
   );
 }
