@@ -103,7 +103,7 @@ interface ICharacter {
 
 export default function Detail() {
   const { id } = useParams();
-  const { data, isLoading } = useQuery<IDetail>(["Detail", id], detail);
+  const { data } = useQuery<IDetail>(["Detail", id], detail);
   const { data: dataCharacter } = useQuery<ICharacter>(
     ["DetailCharacter", id],
     detailCharacters
