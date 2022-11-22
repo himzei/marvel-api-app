@@ -169,7 +169,7 @@ export default function Home() {
           position={"absolute"}
           alignItems="center"
           justifyContent="center"
-          top={-24}
+          top={-16}
           zIndex={99}
         >
           <Grid
@@ -189,8 +189,6 @@ export default function Home() {
               <Link to={`/${data.id}`}>
                 <GridItem>
                   <VStack spacing={4} role="group">
-                    <Text>{data.id}</Text>
-
                     <Box
                       w="40"
                       transition={"0.4s"}
@@ -236,7 +234,7 @@ export default function Home() {
       <VStack w="full">
         <SkewBox
           title="Universe of Super Heroes"
-          description="Coogler agreed, noting that with this decision “a new theme kind of surfaced for us of grief and loss and how do you move forward, after losing someone that meant so much to you."
+          description="Coogler agreed, noting that with this decision “a new theme kind of surfaced for us of grief and loss and how do you move forward"
           imgUrl="https://terrigen-cdn-dev.marvel.com/content/prod/1x/sre7000_trl_comp_wta_v0265.1061_r_0.jpg"
         />
       </VStack>
@@ -251,7 +249,7 @@ export default function Home() {
           position={"absolute"}
           alignItems="center"
           justifyContent="center"
-          top={-24}
+          top={-16}
           zIndex={99}
         >
           <Grid
