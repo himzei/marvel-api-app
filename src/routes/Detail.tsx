@@ -33,14 +33,27 @@ export interface IUrls {
   path: string;
 }
 
+export interface IStoriesDetail {
+  name: string;
+  resourceURI: string;
+  type: string;
+}
+
+export interface IStories {
+  available: number;
+  collectionURI: string;
+  items: IStoriesDetail[];
+}
+
 export interface IResults {
   description: string;
   format: string;
   modified: string;
   title: string;
+  stories: IStories;
   characters: ICharacters;
   creators: ICharacters;
-  images: IImage;
+  images: IImage[];
   events: ICharacters;
   thumbnail: IImage;
   urls: [];
@@ -149,10 +162,50 @@ export default function Detail() {
           </Box>
         </Box>
       </VStack>
-      <VStack w="full" h="500px" bg="gray.700">
-        <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
-          the Series
-        </Text>
+      <VStack w="full" h="auto" bg="gray.700" alignItems={"center"} py={16}>
+        <VStack w="6xl" alignItems={"flex-start"}>
+          <Text
+            color="gray.100"
+            textTransform={"uppercase"}
+            fontSize={24}
+            fontWeight="600"
+            mb="4"
+          >
+            the Stories
+          </Text>
+          <VStack spacing={4} alignItems="flex-start">
+            {data?.data.results[0].stories.items.map((item) => (
+              <VStack alignItems={"flex-stat"} spacing={0}>
+                <Text fontWeight={600} color="gray.100">
+                  {item.name}
+                </Text>
+                <Text color="gray.300">{item.resourceURI}</Text>
+              </VStack>
+            ))}
+          </VStack>
+        </VStack>
+      </VStack>
+      <VStack w="full" h="auto" bg="gray.700" alignItems={"center"} py={16}>
+        <VStack w="6xl" alignItems={"flex-start"}>
+          <Text
+            color="gray.100"
+            textTransform={"uppercase"}
+            fontSize={24}
+            fontWeight="600"
+            mb="4"
+          >
+            the Images
+          </Text>
+          <HStack spacing={4} alignItems="flex-start">
+            {data?.data.results[0].images.map((item, index) => (
+              <Box w={40} key={index}>
+                {index > 5 ? null : (
+                  <Image src={`${item.path}.${item.extension}`} />
+                )}
+              </Box>
+            ))}
+          </HStack>
+        </VStack>
       </VStack>
     </>
   );
