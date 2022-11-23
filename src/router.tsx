@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import CharacterDetail from "./components/CharacterDetail";
 import NotFound from "./components/NotFound";
 import Root from "./components/Root";
-import Characters from "./routes/Characters";
+import CharactersList from "./routes/CharactersList";
 import Detail from "./routes/Detail";
 import Home from "./routes/Home";
 
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/characters",
-        element: <Characters />,
+        element: <CharactersList />,
       },
       {
         path: "/characters/:id",

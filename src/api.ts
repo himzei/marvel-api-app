@@ -22,6 +22,13 @@ export async function charactersData(values: any) {
   ).then((response) => response.json());
 }
 
+export async function characterDetail(values: any) {
+  const CHARACTER_ID = values.queryKey[0];
+  return await fetch(
+    `${BASE_PATH}/v1/public/characters/${CHARACTER_ID}?apikey=${API_KEY}`
+  ).then((response) => response.json());
+}
+
 export async function comicsList() {
   return await fetch(
     `${BASE_PATH}/v1/public/comics?orderBy=focDate&limit=6&apikey=${API_KEY}`

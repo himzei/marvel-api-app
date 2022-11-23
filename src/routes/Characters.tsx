@@ -38,15 +38,20 @@ interface ICharacters {
   data: IData;
 }
 
-export default function Characters() {
+export interface IProps {
+  numContents: number;
+  wSize: string;
+}
+
+export default function Characters({ numContents, wSize }: IProps) {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(24);
+  const [limit, setLimit] = useState(numContents);
 
   const { data, refetch } = useQuery<ICharacters>(
     [page, limit],
     charactersData
   );
-  console.log(data);
+
   const total = Number(data?.data.total);
 
   useEffect(() => {
@@ -59,13 +64,13 @@ export default function Characters() {
 
   return (
     <VStack
-      py={32}
+      py={16}
       textTransform={"uppercase"}
       display="flex"
       justifyContent={"center"}
       spacing={4}
     >
-      <HStack w="7xl" py={4} justifyContent="space-between">
+      <HStack w={wSize} py={4} justifyContent="space-between">
         <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
           Featured Characters
         </Text>
@@ -86,7 +91,7 @@ export default function Characters() {
         </Select>
       </HStack>
 
-      <Grid templateColumns={"repeat(6, 1fr)"} w="7xl" gap="4" rowGap={8}>
+      <Grid templateColumns={"repeat(6, 1fr)"} w={wSize} gap="4" rowGap={8}>
         {data?.data.results.map((item) => (
           <Link to={`${item.id}`}>
             <GridItem bg="red" w="full" role="group">
