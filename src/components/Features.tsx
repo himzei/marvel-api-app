@@ -1,19 +1,20 @@
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import { HiDocumentDuplicate } from "react-icons/hi";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { BiBellMinus } from "react-icons/bi";
 
 export default function Features() {
+  const textColor = useColorModeValue("gray.500", "white");
   return (
     <HStack w="full" justifyContent={"center"} py="16">
       <HStack w="5xl" justifyContent={"space-between"} color="gray.700">
         <Box w="33%">
           <HStack alignItems={"flex-start"} spacing={4}>
-            <HiDocumentDuplicate size={32} />
+            <HiDocumentDuplicate size={32} color="#bbbbbb" />
 
             <VStack alignItems={"flex-start"} w="90%">
               <Text
-                color="gray.900"
+                color={textColor}
                 fontWeight={600}
                 fontSize="20px"
                 letterSpacing={"-0.5px"}
@@ -28,11 +29,11 @@ export default function Features() {
         </Box>
         <Box w="33%">
           <HStack alignItems={"flex-start"} spacing={4} w="90%">
-            <MdOutlineProductionQuantityLimits size={36} />
+            <MdOutlineProductionQuantityLimits color="#bbbbbb" size={36} />
 
             <VStack alignItems={"flex-start"}>
               <Text
-                color="gray.900"
+                color={textColor}
                 fontWeight={600}
                 fontSize="20px"
                 letterSpacing={"-0.5px"}
@@ -48,11 +49,11 @@ export default function Features() {
         </Box>
         <Box w="33%">
           <HStack alignItems={"flex-start"} spacing={4}>
-            <BiBellMinus size={32} />
+            <BiBellMinus size={32} color="#bbbbbb" />
 
             <VStack alignItems={"flex-start"} w="90%">
               <Text
-                color="gray.900"
+                color={textColor}
                 fontWeight={600}
                 fontSize="20px"
                 letterSpacing={"-0.5px"}

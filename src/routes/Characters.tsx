@@ -6,6 +6,7 @@ import {
   Image,
   Select,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -63,9 +64,13 @@ export default function Characters({ numContents, wSize }: IProps) {
     setPage(page);
   };
 
+  const backColor = useColorModeValue("white", "gray.800");
+  const textColor = useColorModeValue("gray.900", "gray.200");
+
   return (
     <VStack
-      py={16}
+      pt={32}
+      pb={16}
       textTransform={"uppercase"}
       display="flex"
       justifyContent={"center"}
@@ -82,8 +87,13 @@ export default function Characters({ numContents, wSize }: IProps) {
             borderLeft={"5px solid red"}
             transform={"translate(-30px) rotate(45deg)"}
           />
-          <Box position={"absolute"} top="7px" bg="white">
-            <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
+          <Box position={"absolute"} top="7px" bg={backColor}>
+            <Text
+              textTransform={"uppercase"}
+              color={textColor}
+              fontSize={24}
+              fontWeight="600"
+            >
               Characters
             </Text>
           </Box>

@@ -205,8 +205,13 @@ export default function Detail() {
           </Text>
 
           <HStack spacing={4} h="200px">
-            {dataCharacter?.data.results.map((item) => (
-              <VStack justifyContent={"flex-start"} w="full" h="full">
+            {dataCharacter?.data.results.map((item, index) => (
+              <VStack
+                justifyContent={"flex-start"}
+                w="full"
+                h="full"
+                key={index}
+              >
                 <Box w="24" h="24" overflow={"hidden"} rounded="full">
                   <Image
                     w="24"
@@ -236,8 +241,8 @@ export default function Detail() {
             the Stories
           </Text>
           <VStack spacing={4} alignItems="flex-start">
-            {data?.data.results[0].stories.items.map((item) => (
-              <VStack alignItems={"flex-stat"} spacing={0}>
+            {data?.data.results[0].stories.items.map((item, index) => (
+              <VStack alignItems={"flex-stat"} spacing={0} key={index}>
                 <Text fontWeight={600} color="gray.100">
                   {item.name}
                 </Text>

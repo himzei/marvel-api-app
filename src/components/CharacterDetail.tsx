@@ -127,8 +127,13 @@ export default function CharacterDetail() {
           </Text>
 
           <HStack spacing={4} h="200px">
-            {data?.data.results.map((item) => (
-              <VStack justifyContent={"flex-start"} w="full" h="full">
+            {data?.data.results.map((item, index) => (
+              <VStack
+                justifyContent={"flex-start"}
+                w="full"
+                h="full"
+                key={index}
+              >
                 <Box w="24" h="24" overflow={"hidden"} rounded="full">
                   <Image
                     w="24"

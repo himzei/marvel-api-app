@@ -14,7 +14,7 @@
       gridAutoFlow="row dense"
       position="relative"
     >
-      {characterListData?.data?.results.map((data) => (
+      {characterListData?.data?.results.((data) => (
         <Link to={`/character/${data.id}`}>
           <GridItem role="group">
             <VStack spacing={3}>

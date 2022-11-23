@@ -3,7 +3,7 @@ import { Grid, GridItem, Skeleton, VStack } from "@chakra-ui/react";
 export default function EventsSkeleton() {
   return (
     <>
-      <Grid templateColumns={"repeat(4, 1fr)"}>
+      <Grid templateColumns={"repeat(4, 1fr)"} gap={8}>
         {Array(4)
           .fill(undefined)
           .map((_, i) => (

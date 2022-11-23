@@ -1,4 +1,4 @@
-import { Box, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Image, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 interface IProps {
@@ -16,10 +16,11 @@ export default function ComicContent({
   title,
   modified,
 }: IProps) {
+  const textColor = useColorModeValue("gray.900", "gray.200");
   return (
     <Link to={`/${comicId}`} key={comicId}>
-      <Box>
-        <VStack spacing={4} role="group">
+      <Box role="group">
+        <VStack spacing={4}>
           <Box
             w="40"
             transition={"0.4s"}
@@ -27,7 +28,6 @@ export default function ComicContent({
               transform: "translateY(-15px)",
             }}
             h="64"
-            overflow={"hidden"}
             rounded="lg"
             bg="red.500"
           >
@@ -42,7 +42,7 @@ export default function ComicContent({
           <VStack alignItems={"flex-start"} w="90%" spacing={0}>
             <Text
               fontWeight={"600"}
-              color="gray.800"
+              color={textColor}
               letterSpacing={"-1px"}
               lineHeight={"20px"}
               _groupHover={{
@@ -51,7 +51,7 @@ export default function ComicContent({
             >
               {title}
             </Text>
-            <Text color="gray.500">{modified.substr(0, 4)}</Text>
+            <Text color={textColor}>{modified.substr(0, 4)}</Text>
           </VStack>
         </VStack>
       </Box>

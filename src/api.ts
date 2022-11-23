@@ -38,9 +38,12 @@ export async function comicsList(values: any) {
   ).then((response) => response.json());
 }
 
-export async function eventsList() {
+export async function eventsList(values: any) {
+  const page = values.queryKey[0];
+  const LIMIT = values.queryKey[1];
+  const OFFSET = (page - 1) * LIMIT;
   return await fetch(
-    `${BASE_PATH}/v1/public/events?orderBy=name&limit=16&apikey=${API_KEY}`
+    `${BASE_PATH}/v1/public/events?orderBy=name&offset=${OFFSET}&limit=${LIMIT}&apikey=${API_KEY}`
   ).then((response) => response.json());
 }
 

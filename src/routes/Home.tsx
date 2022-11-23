@@ -1,7 +1,15 @@
-import { VStack, Box, Text, Image, Divider, HStack } from "@chakra-ui/react";
+import {
+  VStack,
+  Box,
+  Text,
+  Image,
+  Divider,
+  HStack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { charactersList, comicsList, eventsList, seriesList } from "../api";
+import { comicsList, eventsList, seriesList } from "../api";
 import ComicsSkeleton from "../components/ComicsSkeleton";
 import EventsSkeleton from "../components/EventsSkeleton";
 import Features from "../components/Features";
@@ -15,6 +23,7 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 import ComicContent from "../components/ComicContent";
+import EventsContent from "../components/EventsContent";
 
 const Div = styled.div`
   transform: translateY(-50px);
@@ -77,6 +86,9 @@ export interface IComicsResult {
 }
 
 export default function Home() {
+  const backColor = useColorModeValue("white", "gray.800");
+  const textColor = useColorModeValue("gray.900", "gray.200");
+
   const settingsEvent = {
     className: "center",
     infinite: true,
@@ -117,23 +129,17 @@ export default function Home() {
     ),
   };
 
-  const { data: characterListData } = useQuery<IComicsResult>(
-    ["characterList"],
-    charactersList
-  );
-
   const { data: comicsListData, isLoading: comicsListIsLoading } =
     useQuery<IComicsResult>([1, 6], comicsList);
 
   const { data: eventsListData, isLoading: eventsIsLoading } =
-    useQuery<IComicsResult>(["eventsList"], eventsList);
+    useQuery<IComicsResult>([1, 4], eventsList);
 
   const { data: seriesListData } = useQuery<IComicsResult>(
     ["seriesList"],
     seriesList
   );
 
-  console.log(characterListData);
   return (
     <>
       <Divider mb={"30px"} />
@@ -155,7 +161,7 @@ export default function Home() {
       <VStack w="full" position="relative" h="400px">
         <Box
           w="6xl"
-          bg="white"
+          bg={backColor}
           py={8}
           px={4}
           position={"absolute"}
@@ -166,6 +172,7 @@ export default function Home() {
           <Slider {...settingsComic}>
             {comicsListData?.data?.results.map((data) => (
               <ComicContent
+                key={data.id}
                 comicId={data.id}
                 path={data.thumbnail.path}
                 extension={data.thumbnail.extension}
@@ -190,7 +197,7 @@ export default function Home() {
       <VStack w="full" position="relative" h="300px">
         <Box
           w="6xl"
-          bg="white"
+          bg={backColor}
           py={8}
           px={4}
           position={"absolute"}
@@ -202,72 +209,15 @@ export default function Home() {
           {eventsIsLoading ? <EventsSkeleton /> : null}
           <Slider {...settingsEvent}>
             {eventsListData?.data?.results.map((data) => (
-              <Link to={`/${data.id}`}>
-                <Box>
-                  <VStack spacing={4} role="group">
-                    <Box
-                      w="260px"
-                      h="160px"
-                      overflow={"hidden"}
-                      rounded="lg"
-                      position="relative"
-                    >
-                      <Image
-                        transform="rotateY(360deg)"
-                        opacity="1"
-                        transition="0.4s"
-                        _groupHover={{
-                          transform: "rotateY(180deg)",
-                          opacity: 0,
-                        }}
-                        w="full"
-                        objectFit={"cover"}
-                        objectPosition="center"
-                        src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
-                      />
-                      <Box
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        w="full"
-                        h="full"
-                        bg="red.500"
-                        opacity="0"
-                        transform="rotateY(180deg)"
-                        transition="0.4s"
-                        _groupHover={{
-                          transform: "rotateY(360deg)",
-                          opacity: "1",
-                        }}
-                      >
-                        <VStack p="4" alignItems={"flex-start"}>
-                          <Text fontWeight={"600"} color="white">
-                            Details
-                          </Text>
-                          <Divider />
-                        </VStack>
-                      </Box>
-                    </Box>
-
-                    <VStack alignItems={"flex-start"} w="95%" spacing={0}>
-                      <Text
-                        fontWeight={"600"}
-                        color="gray.500"
-                        letterSpacing={"-1px"}
-                        lineHeight={"20px"}
-                        _groupHover={{
-                          color: "red.400",
-                        }}
-                      >
-                        {data.title}
-                      </Text>
-                      <Text color="gray.800">
-                        {data.description.substr(0, 80)}
-                      </Text>
-                    </VStack>
-                  </VStack>
-                </Box>
-              </Link>
+              <EventsContent
+                key={data.id}
+                eventId={data.id}
+                path={data.thumbnail.path}
+                extension={data.thumbnail.extension}
+                title={data.title}
+                description={data.description}
+                textColor={textColor}
+              />
             ))}
           </Slider>
         </Box>
@@ -293,8 +243,13 @@ export default function Home() {
               borderLeft={"5px solid red"}
               transform={"translate(-30px) rotate(45deg)"}
             />
-            <Box position={"absolute"} top="7px" bg="white">
-              <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
+            <Box position={"absolute"} top="7px" bg={backColor}>
+              <Text
+                textTransform={"uppercase"}
+                color={textColor}
+                fontSize={24}
+                fontWeight="600"
+              >
                 the series
               </Text>
             </Box>
@@ -302,7 +257,7 @@ export default function Home() {
           <VStack alignItems={"flex-start"}>
             {seriesListData?.data?.results.map((data) => (
               <>
-                <Link to={`/${data.id}`}>
+                <Link to={`/${data.id}`} key={data.id}>
                   <HStack w="full" h="full" spacing="8">
                     <Box
                       w="410px"

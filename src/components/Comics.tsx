@@ -5,6 +5,7 @@ import {
   HStack,
   Select,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import Pagination from "react-js-pagination";
@@ -24,7 +25,6 @@ export default function Comics({ numContents, wSize }: IProps) {
     [page, limit],
     comicsList
   );
-  console.log(data, isLoading);
 
   const total = Number(data?.data.total);
 
@@ -35,6 +35,9 @@ export default function Comics({ numContents, wSize }: IProps) {
   const handlePageChange = (page: number) => {
     setPage(page);
   };
+
+  const backColor = useColorModeValue("white", "gray.800");
+  const textColor = useColorModeValue("gray.900", "gray.200");
 
   return (
     <HStack justifyContent={"center"} w="full" pt={32} pb={16}>
@@ -55,8 +58,13 @@ export default function Comics({ numContents, wSize }: IProps) {
               borderLeft={"5px solid red"}
               transform={"translate(-30px) rotate(45deg)"}
             />
-            <Box position={"absolute"} top="7px" bg="white">
-              <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
+            <Box position={"absolute"} top="7px" bg={backColor}>
+              <Text
+                textTransform={"uppercase"}
+                color={textColor}
+                fontSize={24}
+                fontWeight="600"
+              >
                 the Comics
               </Text>
             </Box>
@@ -79,8 +87,8 @@ export default function Comics({ numContents, wSize }: IProps) {
         </HStack>
         <Grid templateColumns={"repeat(6, 1fr)"} rowGap={8}>
           {isLoading ? <ComicsSkeleton /> : null}
-          {data?.data?.results.map((data) => (
-            <GridItem>
+          {data?.data?.results.map((data, index) => (
+            <GridItem key={index}>
               <ComicContent
                 comicId={data.id}
                 path={data.thumbnail.path}
