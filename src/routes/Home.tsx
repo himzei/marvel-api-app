@@ -11,6 +11,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { charactersList, comicsList, eventsList, seriesList } from "../api";
+import ComicsSkeleton from "../components/ComicsSkeleton";
+import EventsSkeleton from "../components/EventsSkeleton";
 import Features from "../components/Features";
 import SkewBox from "../components/SkewBox";
 import SliderSection from "../components/SliderSection";
@@ -55,15 +57,11 @@ export default function Home() {
     charactersList
   );
 
-  const { data: comicsListData } = useQuery<IComicsResult>(
-    ["comicsList"],
-    comicsList
-  );
+  const { data: comicsListData, isLoading: comicsListIsLoading } =
+    useQuery<IComicsResult>(["comicsList"], comicsList);
 
-  const { data: eventsListData } = useQuery<IComicsResult>(
-    ["eventsList"],
-    eventsList
-  );
+  const { data: eventsListData, isLoading: eventsIsLoading } =
+    useQuery<IComicsResult>(["eventsList"], eventsList);
 
   const { data: seriesListData } = useQuery<IComicsResult>(
     ["seriesList"],
@@ -113,8 +111,9 @@ export default function Home() {
             gap={6}
             gridAutoFlow="row dense"
           >
+            {comicsListIsLoading ? <ComicsSkeleton /> : null}
             {comicsListData?.data?.results.map((data) => (
-              <Link to={`/${data.id}`}>
+              <Link to={`/${data.id}`} key={data.id}>
                 <GridItem>
                   <VStack spacing={4} role="group">
                     <Box
@@ -193,6 +192,7 @@ export default function Home() {
             gap={6}
             gridAutoFlow="row dense"
           >
+            {eventsIsLoading ? <EventsSkeleton /> : null}
             {eventsListData?.data?.results.map((data) => (
               <Link to={`/${data.id}`}>
                 <GridItem>
@@ -268,7 +268,7 @@ export default function Home() {
       {/* 캐릭터 */}
       <HStack w="full" justifyContent={"center"}>
         <Box w="6xl">
-          <Characters numContents={6} wSize={"6xl"} />
+          <Characters numContents={12} wSize={"6xl"} />
         </Box>
       </HStack>
 

@@ -9,11 +9,24 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
+import React, { useEffect, useState } from "react";
 
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [scroll, setScroll] = useState(true);
+
+  useEffect(() => {
+    document.addEventListener("wheel", (event) => {
+      if (event.deltaY < 0) {
+        setScroll(true);
+      } else if (event.deltaY > 0) {
+        setScroll(false);
+      }
+    });
+  }, []);
   return (
     <Stack
+      zIndex={999}
       w="100%"
       h="60px"
       color="white"
@@ -22,8 +35,8 @@ export default function Header() {
       alignItems={"center"}
       justifyContent={"center"}
       boxShadow="sm"
-      zIndex={99}
       bg="gray.800"
+      position={scroll ? "fixed" : "absolute"}
     >
       <HStack
         w={{ md: "70%", lg: "80%", xl: "80%" }}

@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { charactersData } from "../api";
 import Pagination from "react-js-pagination";
 import "./Paging.css";
+import CharacterSkeleton from "../components/CharacterSkeleton";
 
 interface IThumbnail {
   extension: string;
@@ -47,7 +48,7 @@ export default function Characters({ numContents, wSize }: IProps) {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(numContents);
 
-  const { data, refetch } = useQuery<ICharacters>(
+  const { data, refetch, isLoading } = useQuery<ICharacters>(
     [page, limit],
     charactersData
   );
@@ -105,8 +106,10 @@ export default function Characters({ numContents, wSize }: IProps) {
       </HStack>
 
       <Grid templateColumns={"repeat(6, 1fr)"} w={wSize} gap="4" rowGap={8}>
-        {data?.data.results.map((item) => (
-          <Link to={`${item.id}`}>
+        {isLoading ? <CharacterSkeleton numContents={numContents} /> : null}
+
+        {data?.data.results.map((item, index) => (
+          <Link to={`${item.id}`} key={index}>
             <GridItem bg="red" w="full" role="group">
               <VStack h="auto">
                 <Box w="full" h="48" overflow={"hidden"}>
@@ -129,6 +132,7 @@ export default function Characters({ numContents, wSize }: IProps) {
                   px={6}
                   position="relative"
                   overflow={"hidden"}
+                  // 컷팅
                 >
                   <Box
                     bg="gray.800"
@@ -141,6 +145,15 @@ export default function Characters({ numContents, wSize }: IProps) {
                     _groupHover={{
                       top: "160px",
                     }}
+                  />
+                  <Box
+                    position="absolute"
+                    bottom={-5}
+                    right={-5}
+                    w="30px"
+                    h="30px"
+                    bg="white"
+                    transform={"rotate(45deg) scale(2)"}
                   />
                   <Text
                     fontSize={14}
