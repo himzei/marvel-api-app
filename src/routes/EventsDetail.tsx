@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { detail, detailEvents } from "../api";
+import { detailEvents } from "../api";
 
 export interface ICharactersItems {
   name: string;
