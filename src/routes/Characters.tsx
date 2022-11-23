@@ -1,7 +1,19 @@
-import { Box, Grid, GridItem, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  HStack,
+  Image,
+  Select,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { charactersData } from "../api";
+import Pagination from "react-js-pagination";
+import "./Paging.css";
 
 interface IThumbnail {
   extension: string;
@@ -16,6 +28,7 @@ interface ICharacterResults {
 }
 interface IData {
   count: number;
+  total: number;
   limit: number;
   offset: 0;
   results: ICharacterResults[];
@@ -26,20 +39,53 @@ interface ICharacters {
 }
 
 export default function Characters() {
-  const { data } = useQuery<ICharacters>(["charactersData"], charactersData);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(24);
+
+  const { data, refetch } = useQuery<ICharacters>(
+    [page, limit],
+    charactersData
+  );
   console.log(data);
+  const total = Number(data?.data.total);
+
+  useEffect(() => {
+    refetch();
+  }, [page, refetch]);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+
   return (
     <VStack
       py={32}
       textTransform={"uppercase"}
       display="flex"
       justifyContent={"center"}
+      spacing={4}
     >
-      <Box w="7xl" py={4}>
+      <HStack w="7xl" py={4} justifyContent="space-between">
         <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
           Featured Characters
         </Text>
-      </Box>
+        <Select
+          placeholder="게시물 수"
+          w="32"
+          value={limit}
+          onChange={({ target: { value } }) => setLimit(Number(value))}
+        >
+          <option value="6">6</option>
+          <option value="12">12</option>
+          <option value="18">18</option>
+          <option value="24">24</option>
+          <option value="30">30</option>
+          <option value="36">36</option>
+          <option value="42">42</option>
+          <option value="48">48</option>
+        </Select>
+      </HStack>
+
       <Grid templateColumns={"repeat(6, 1fr)"} w="7xl" gap="4" rowGap={8}>
         {data?.data.results.map((item) => (
           <Link to={`${item.id}`}>
@@ -93,6 +139,17 @@ export default function Characters() {
           </Link>
         ))}
       </Grid>
+      <Box>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={limit}
+          totalItemsCount={total}
+          pageRangeDisplayed={5}
+          prevPageText={"‹"}
+          nextPageText={"›"}
+          onChange={handlePageChange}
+        />
+      </Box>
     </VStack>
   );
 }

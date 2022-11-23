@@ -13,9 +13,12 @@ export async function charactersList() {
 }
 
 // 큰 카테고리
-export async function charactersData() {
+export async function charactersData(values: any) {
+  const page = values.queryKey[0];
+  const LIMIT = values.queryKey[1];
+  const OFFSET = (page - 1) * LIMIT;
   return await fetch(
-    `${BASE_PATH}/v1/public/characters?orderBy=-modified&limit=24&apikey=${API_KEY}`
+    `${BASE_PATH}/v1/public/characters?orderBy=-modified&offset=${OFFSET}&limit=${LIMIT}&apikey=${API_KEY}`
   ).then((response) => response.json());
 }
 
