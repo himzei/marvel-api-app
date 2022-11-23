@@ -37,7 +37,7 @@ export default function Features() {
                 fontSize="20px"
                 letterSpacing={"-0.5px"}
               >
-                3,000 하루 API 요청량
+                API 요청량 하루 3000번 리미트
               </Text>
               <Text color="gray.500">
                 하루 API요청 횟수가 3,000회로 제한되어 있어 컨텐츠가 보이지 않을

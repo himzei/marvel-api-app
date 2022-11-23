@@ -71,6 +71,7 @@ export default function Home() {
   console.log(characterListData);
   return (
     <>
+      <Divider mb={"30px"} />
       <SliderSection />
 
       {/* Section Features */}

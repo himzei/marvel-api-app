@@ -9,7 +9,20 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const scrollVariant = {
+  invisible: (isScroll: boolean) => ({
+    opacity: 0,
+    y: isScroll ? 0 : -50,
+  }),
+  visible: { opacity: 1, transition: { duration: 1 } },
+  exit: (isScroll: boolean) => ({
+    opacity: 0,
+    y: isScroll ? -100 : 100,
+  }),
+};
 
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -26,6 +39,8 @@ export default function Header() {
   }, []);
   return (
     <Stack
+      transform={scroll ? "translateY(0px)" : "translateY(-60px)"}
+      transition="0.4s"
       zIndex={999}
       w="100%"
       h="60px"
@@ -36,7 +51,7 @@ export default function Header() {
       justifyContent={"center"}
       boxShadow="sm"
       bg="gray.800"
-      position={scroll ? "fixed" : "absolute"}
+      position="fixed"
     >
       <HStack
         w={{ md: "70%", lg: "80%", xl: "80%" }}
