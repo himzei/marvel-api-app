@@ -71,9 +71,22 @@ export default function Characters({ numContents, wSize }: IProps) {
       spacing={4}
     >
       <HStack w={wSize} py={4} justifyContent="space-between">
-        <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
-          Featured Characters
-        </Text>
+        <Box position="relative" overflow="hidden" w="250px" h="50px">
+          <Box
+            position="absolute"
+            top="15px"
+            left="40px"
+            w="100px"
+            h="100px"
+            borderLeft={"5px solid red"}
+            transform={"translate(-30px) rotate(45deg)"}
+          />
+          <Box position={"absolute"} top="7px" bg="white">
+            <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
+              Characters
+            </Text>
+          </Box>
+        </Box>
         <Select
           placeholder="게시물 수"
           w="32"

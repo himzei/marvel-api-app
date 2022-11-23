@@ -274,26 +274,20 @@ export default function Home() {
 
       {/* Section4 Series List */}
       <VStack w="full" alignItems={"center"} h="auto">
-        <VStack w="6xl" alignItems={"flex-start"}>
-          <Box
-            w="2px"
-            h="80px"
-            mb="10"
-            transform="rotate(45deg) translateX(50px)"
-            position="relative"
-          >
+        <VStack w="6xl" alignItems={"flex-start"} spacing={8}>
+          <Box position="relative" overflow="hidden" w="250px" h="50px">
             <Box
-              bg="white"
-              py={0.5}
-              px={2}
-              transform="rotate(-45deg)"
-              w="40"
               position="absolute"
-              left="-50px"
-              top="-10px"
-            >
+              top="15px"
+              left="40px"
+              w="100px"
+              h="100px"
+              borderLeft={"5px solid red"}
+              transform={"translate(-30px) rotate(45deg)"}
+            />
+            <Box position={"absolute"} top="7px" bg="white">
               <Text textTransform={"uppercase"} fontSize={24} fontWeight="600">
-                the Series
+                the series
               </Text>
             </Box>
           </Box>
