@@ -1,13 +1,4 @@
-import {
-  VStack,
-  Box,
-  Text,
-  Grid,
-  GridItem,
-  Image,
-  Divider,
-  HStack,
-} from "@chakra-ui/react";
+import { VStack, Box, Text, Image, Divider, HStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { charactersList, comicsList, eventsList, seriesList } from "../api";
@@ -23,6 +14,7 @@ import {
   MdOutlineArrowBackIosNew,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
+import ComicContent from "../components/ComicContent";
 
 const Div = styled.div`
   transform: translateY(-50px);
@@ -85,6 +77,25 @@ export interface IComicsResult {
 }
 
 export default function Home() {
+  const settingsEvent = {
+    className: "center",
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 4,
+    swipeToSlide: true,
+    autoPlay: true,
+    nextArrow: (
+      <Div>
+        <MdOutlineArrowForwardIos />
+      </Div>
+    ),
+    prevArrow: (
+      <DivPre>
+        <MdOutlineArrowBackIosNew />
+      </DivPre>
+    ),
+  };
+
   const settingsComic = {
     dots: true,
     infinite: true,
@@ -92,6 +103,7 @@ export default function Home() {
     slidesToShow: 6,
     slidesToScroll: 6,
     autoPlay: true,
+    swipeToSlide: true,
     autoPlaySpeed: 5000,
     nextArrow: (
       <Div>
@@ -111,7 +123,7 @@ export default function Home() {
   );
 
   const { data: comicsListData, isLoading: comicsListIsLoading } =
-    useQuery<IComicsResult>(["comicsList"], comicsList);
+    useQuery<IComicsResult>([1, 6], comicsList);
 
   const { data: eventsListData, isLoading: eventsIsLoading } =
     useQuery<IComicsResult>(["eventsList"], eventsList);
@@ -133,7 +145,7 @@ export default function Home() {
       {/* Section2 SkewBox */}
       <VStack w="full">
         <SkewBox
-          title="Cinematic Universe"
+          title="Comics"
           description="“LONG SHADOW” Concludes! The battle for Wakanda comes to a head! T’Challa has owned the path his secrets paved for the Hatut Zeraze’s takeover"
           imgUrl="https://assets.vogue.in/photos/5ce412599cc0c0b8f5f9b4bf/4:3/w_1440,h_1080,c_limit/Everything-you-need-to-know-before-watching-Marvel-movies-this-year.jpg"
         />
@@ -153,45 +165,13 @@ export default function Home() {
           {comicsListIsLoading ? <ComicsSkeleton /> : null}
           <Slider {...settingsComic}>
             {comicsListData?.data?.results.map((data) => (
-              <Link to={`/${data.id}`} key={data.id}>
-                <Box>
-                  <VStack spacing={4} role="group">
-                    <Box
-                      w="40"
-                      transition={"0.4s"}
-                      _groupHover={{
-                        transform: "translateY(-15px)",
-                      }}
-                      h="64"
-                      overflow={"hidden"}
-                      rounded="lg"
-                      bg="red.500"
-                    >
-                      <Image
-                        h="full"
-                        objectFit={"cover"}
-                        objectPosition="center"
-                        src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
-                      />
-                    </Box>
-
-                    <VStack alignItems={"flex-start"} w="90%" spacing={0}>
-                      <Text
-                        fontWeight={"600"}
-                        color="gray.800"
-                        letterSpacing={"-1px"}
-                        lineHeight={"20px"}
-                        _groupHover={{
-                          color: "red.400",
-                        }}
-                      >
-                        {data.title}
-                      </Text>
-                      <Text color="gray.500">{data.modified.substr(0, 4)}</Text>
-                    </VStack>
-                  </VStack>
-                </Box>
-              </Link>
+              <ComicContent
+                comicId={data.id}
+                path={data.thumbnail.path}
+                extension={data.thumbnail.extension}
+                title={data.title}
+                modified={data.modified}
+              />
             ))}
           </Slider>
         </Box>
@@ -200,7 +180,7 @@ export default function Home() {
       {/* Section3 SkewBox */}
       <VStack w="full">
         <SkewBox
-          title="Universe of Super Heroes"
+          title="Events"
           description="Coogler agreed, noting that with this decision “a new theme kind of surfaced for us of grief and loss and how do you move forward"
           imgUrl="https://terrigen-cdn-dev.marvel.com/content/prod/1x/sre7000_trl_comp_wta_v0265.1061_r_0.jpg"
         />
@@ -208,7 +188,7 @@ export default function Home() {
 
       {/* Section3 Evets List */}
       <VStack w="full" position="relative" h="300px">
-        <VStack
+        <Box
           w="6xl"
           bg="white"
           py={8}
@@ -219,23 +199,11 @@ export default function Home() {
           top={-16}
           zIndex={99}
         >
-          <Grid
-            display={"flex"}
-            height="300px"
-            templateColumns={{
-              sm: "repeat(2, 1fr)",
-              md: "repeat(4, 1fr)",
-              lg: "repeat(5, 1fr)",
-              xl: "repeat(6, 1fr)",
-              "2xl": "repeat(7, 1fr)",
-            }}
-            gap={6}
-            gridAutoFlow="row dense"
-          >
-            {eventsIsLoading ? <EventsSkeleton /> : null}
+          {eventsIsLoading ? <EventsSkeleton /> : null}
+          <Slider {...settingsEvent}>
             {eventsListData?.data?.results.map((data) => (
               <Link to={`/${data.id}`}>
-                <GridItem>
+                <Box>
                   <VStack spacing={4} role="group">
                     <Box
                       w="260px"
@@ -298,11 +266,11 @@ export default function Home() {
                       </Text>
                     </VStack>
                   </VStack>
-                </GridItem>
+                </Box>
               </Link>
             ))}
-          </Grid>
-        </VStack>
+          </Slider>
+        </Box>
       </VStack>
 
       {/* 캐릭터 */}

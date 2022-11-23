@@ -7,6 +7,7 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
+import { BsBoxArrowInRight } from "react-icons/bs";
 
 interface IProps {
   title: string;
@@ -25,24 +26,27 @@ export default function SkewBox({ title, description, imgUrl }: IProps) {
           alignItems="flex-start"
           transform={"translateX(50%)"}
         >
-          <Heading color="white">{title}</Heading>
+          <Heading color="white" textTransform={"uppercase"}>
+            {title}
+          </Heading>
           <Text color="white">{description} </Text>
 
           <HStack py="4">
             <Button
+              rightIcon={<BsBoxArrowInRight />}
               textTransform={"uppercase"}
               variant="outline"
               colorScheme={"red"}
             >
-              Learn More
+              List More
             </Button>
-            <Button
+            {/* <Button
               textTransform={"uppercase"}
               variant="outline"
               colorScheme={"red"}
             >
               Buy Ticket
-            </Button>
+            </Button> */}
           </HStack>
         </VStack>
       </Box>

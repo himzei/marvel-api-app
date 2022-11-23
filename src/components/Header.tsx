@@ -59,20 +59,11 @@ export default function Header() {
             <Link to="/characters">
               <Text>characters</Text>
             </Link>
-            <Link to="/outbound">
+            <Link to="/comics">
               <Text>comics</Text>
             </Link>
-            <Link to="/music">
-              <Text>creators</Text>
-            </Link>
-            <Link to="/dvd">
+            <Link to="/events">
               <Text>events</Text>
-            </Link>
-            <Link to="/used">
-              <Text>series</Text>
-            </Link>
-            <Link to="/ebook">
-              <Text>stories</Text>
             </Link>
           </HStack>
         </HStack>
