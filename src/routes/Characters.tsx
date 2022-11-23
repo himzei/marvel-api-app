@@ -119,7 +119,7 @@ export default function Characters({ numContents, wSize }: IProps) {
         {isLoading ? <CharacterSkeleton numContents={numContents} /> : null}
 
         {data?.data.results.map((item, index) => (
-          <Link to={`${item.id}`} key={index}>
+          <Link to={`/characters/${item.id}`} key={index}>
             <GridItem bg="red" w="full" role="group">
               <VStack h="auto">
                 <Box w="full" h="48" overflow={"hidden"}>

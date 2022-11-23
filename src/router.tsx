@@ -5,6 +5,7 @@ import Root from "./components/Root";
 import CharactersList from "./routes/CharactersList";
 import ComicsList from "./routes/ComicsList";
 import Detail from "./routes/Detail";
+import EventsDetail from "./routes/EventsDetail";
 import EventsList from "./routes/EventsList";
 import Home from "./routes/Home";
 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/events",
         element: <EventsList />,
+      },
+      {
+        path: "/events/:id",
+        element: <EventsDetail />,
       },
     ],
   },

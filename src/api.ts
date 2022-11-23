@@ -43,7 +43,7 @@ export async function eventsList(values: any) {
   const LIMIT = values.queryKey[1];
   const OFFSET = (page - 1) * LIMIT;
   return await fetch(
-    `${BASE_PATH}/v1/public/events?orderBy=name&offset=${OFFSET}&limit=${LIMIT}&apikey=${API_KEY}`
+    `${BASE_PATH}/v1/public/events?offset=${OFFSET}&limit=${LIMIT}&apikey=${API_KEY}`
   ).then((response) => response.json());
 }
 
@@ -65,5 +65,13 @@ export async function detailCharacters(id: any) {
   console.log(comicId);
   return await fetch(
     `${BASE_PATH}/v1/public/comics/${comicId}/characters?apikey=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+export async function detailEvents(id: any) {
+  const eventId = id.queryKey[1];
+  console.log(eventId);
+  return await fetch(
+    `${BASE_PATH}/v1/public/events/${eventId}apikey=${API_KEY}`
   ).then((response) => response.json());
 }

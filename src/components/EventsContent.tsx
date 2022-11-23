@@ -19,7 +19,7 @@ export default function EventsContent({
   textColor,
 }: IProps) {
   return (
-    <Link to={`/${eventId}`}>
+    <Link to={`/events/${eventId}`}>
       <Box>
         <VStack spacing={4} role="group">
           <Box

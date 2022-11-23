@@ -1,19 +1,79 @@
 import {
+  Image,
+  Text,
+  VStack,
   Box,
+  HStack,
   Grid,
   GridItem,
-  VStack,
-  Text,
-  HStack,
-  Image,
+  Avatar,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { characterDetail } from "../api";
+import { useQuery } from "@tanstack/react-query";
+import { detail, detailEvents } from "../api";
 
-interface IImage {
+export interface ICharactersItems {
+  name: string;
+  resourceURI: string;
+}
+
+export interface ICharacters {
+  available: number;
+  collectionURI: string;
+  items: ICharactersItems[];
+}
+
+export interface IImage {
   extension: string;
   path: string;
+}
+
+export interface IUrls {
+  type: string;
+  path: string;
+}
+
+export interface IStoriesDetail {
+  name: string;
+  resourceURI: string;
+  type: string;
+}
+
+export interface IStories {
+  available: number;
+  collectionURI: string;
+  items: IStoriesDetail[];
+}
+
+export interface IResults {
+  description: string;
+  format: string;
+  modified: string;
+  title: string;
+  stories: IStories;
+  characters: ICharacters;
+  creators: ICharacters;
+  images: IImage[];
+  events: ICharacters;
+  thumbnail: IImage;
+}
+
+export interface IDataResult {
+  offset: number;
+  limit: number;
+  total: number;
+  count: number;
+  results: IResults[];
+}
+
+export interface IDetail {
+  code: number;
+  status: string;
+  copyright: string;
+  attributionText: string;
+  attributionHTML: string;
+  etag: string;
+  data: IDataResult;
 }
 
 interface ICharItems {
@@ -40,16 +100,20 @@ interface ICharacter {
   data: ICharResult;
 }
 
-export default function CharacterDetail() {
+export default function EventsDetail() {
   const { id } = useParams();
-  const { data } = useQuery<ICharacter>([id], characterDetail);
-  console.log(data);
+  const { data } = useQuery<IDetail>(["Detail", id], detailEvents);
+  const { data: dataCharacter } = useQuery<ICharacter>(
+    ["DetailCharacter", id],
+    detailEvents
+  );
+
   return (
     <>
       <Box pt={12}>
         <VStack
           w="full"
-          h="700px"
+          h="630px"
           backgroundImage={`url(${data?.data.results[0].thumbnail.path}.${data?.data.results[0].thumbnail.extension})`}
           backgroundRepeat="no-repeat"
           backgroundSize="cover"
@@ -91,9 +155,11 @@ export default function CharacterDetail() {
                       fontWeight={600}
                       fontSize="2xl"
                     >
-                      hello
+                      {data?.data.results[0].title}
                     </Text>
-                    <Text color="gray.200">hello</Text>
+                    <Text color="gray.200">
+                      {data?.data.results[0].description.substr(0, 400)}
+                    </Text>
                     <VStack w="full" alignItems={"flex-start"} spacing={0}>
                       <Text color="gray.100" fontWeight={600} fontSize="xl">
                         Published
@@ -106,7 +172,16 @@ export default function CharacterDetail() {
                       <Text color="gray.200" fontWeight={600} fontSize="xl">
                         Creator
                       </Text>
-                      <VStack alignItems={"flex-start"}>hello</VStack>
+                      <VStack alignItems={"flex-start"}>
+                        {data?.data.results[0].characters.items.map(
+                          (item, index) => (
+                            <HStack key={index}>
+                              <Avatar w="8" h="8" name={item.name} />
+                              <Text color="gray.200">{item.name}</Text>
+                            </HStack>
+                          )
+                        )}
+                      </VStack>
                     </VStack>
                   </VStack>
                 </GridItem>
@@ -128,7 +203,7 @@ export default function CharacterDetail() {
             </Text>
 
             <HStack spacing={4} h="200px">
-              {data?.data.results.map((item, index) => (
+              {dataCharacter?.data.results.map((item, index) => (
                 <VStack
                   justifyContent={"flex-start"}
                   w="full"
@@ -147,6 +222,53 @@ export default function CharacterDetail() {
                     {item.name}
                   </Text>
                 </VStack>
+              ))}
+            </HStack>
+          </VStack>
+        </VStack>
+
+        <VStack w="full" h="auto" bg="gray.700" alignItems={"center"} py={16}>
+          <VStack w="6xl" alignItems={"flex-start"}>
+            <Text
+              color="gray.100"
+              textTransform={"uppercase"}
+              fontSize={24}
+              fontWeight="600"
+              mb="4"
+            >
+              the Stories
+            </Text>
+            <VStack spacing={4} alignItems="flex-start">
+              {data?.data.results[0].stories.items.map((item, index) => (
+                <VStack alignItems={"flex-stat"} spacing={0} key={index}>
+                  <Text fontWeight={600} color="gray.100">
+                    {item.name}
+                  </Text>
+                  <Text color="gray.300">{item.resourceURI}</Text>
+                </VStack>
+              ))}
+            </VStack>
+          </VStack>
+        </VStack>
+
+        <VStack w="full" h="auto" bg="gray.700" alignItems={"center"} py={16}>
+          <VStack w="6xl" alignItems={"flex-start"}>
+            <Text
+              color="gray.100"
+              textTransform={"uppercase"}
+              fontSize={24}
+              fontWeight="600"
+              mb="4"
+            >
+              the Images
+            </Text>
+            <HStack spacing={4} alignItems="flex-start">
+              {data?.data.results[0].images.map((item, index) => (
+                <Box w={40} key={index}>
+                  {index > 5 ? null : (
+                    <Image src={`${item.path}.${item.extension}`} />
+                  )}
+                </Box>
               ))}
             </HStack>
           </VStack>
