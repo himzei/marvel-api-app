@@ -1,10 +1,10 @@
 const BASE_PATH = "https://gateway.marvel.com:443";
 
 // 개인키
-const API_KEY = "1f2be9e5633db8ee3608691d7e342629";
+// const API_KEY = "1f2be9e5633db8ee3608691d7e342629";
 
 // 다른사람 키
-// const API_KEY = "61168dc591cd40d37da9b851a5bc569b";
+const API_KEY = "61168dc591cd40d37da9b851a5bc569b";
 
 export async function charactersList() {
   return await fetch(
@@ -31,7 +31,7 @@ export async function characterDetail(values: any) {
 
 export async function comicsList() {
   return await fetch(
-    `${BASE_PATH}/v1/public/comics?orderBy=focDate&limit=6&apikey=${API_KEY}`
+    `${BASE_PATH}/v1/public/comics?orderBy=focDate&limit=24&apikey=${API_KEY}`
   ).then((response) => response.json());
 }
 

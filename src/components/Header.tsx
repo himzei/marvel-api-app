@@ -10,19 +10,6 @@ import {
 import { Link } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const scrollVariant = {
-  invisible: (isScroll: boolean) => ({
-    opacity: 0,
-    y: isScroll ? 0 : -50,
-  }),
-  visible: { opacity: 1, transition: { duration: 1 } },
-  exit: (isScroll: boolean) => ({
-    opacity: 0,
-    y: isScroll ? -100 : 100,
-  }),
-};
 
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();

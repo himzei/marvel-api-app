@@ -17,6 +17,39 @@ import Features from "../components/Features";
 import SkewBox from "../components/SkewBox";
 import SliderSection from "../components/SliderSection";
 import Characters from "./Characters";
+import Slider from "react-slick";
+import styled from "styled-components";
+import {
+  MdOutlineArrowBackIosNew,
+  MdOutlineArrowForwardIos,
+} from "react-icons/md";
+
+const Div = styled.div`
+  transform: translateY(-50px);
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: -26px;
+  z-index: 99;
+  text-align: right;
+  line-height: 30px;
+  &:before {
+    color: black;
+  }
+`;
+const DivPre = styled.div`
+  transform: translateY(-50px);
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: -26px;
+  z-index: 99;
+  text-align: left;
+  line-height: 30px;
+  &:before {
+    color: black;
+  }
+`;
 
 export interface IThumbnail {
   path: string;
@@ -52,6 +85,26 @@ export interface IComicsResult {
 }
 
 export default function Home() {
+  const settingsComic = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 6,
+    autoPlay: true,
+    autoPlaySpeed: 5000,
+    nextArrow: (
+      <Div>
+        <MdOutlineArrowForwardIos />
+      </Div>
+    ),
+    prevArrow: (
+      <DivPre>
+        <MdOutlineArrowBackIosNew />
+      </DivPre>
+    ),
+  };
+
   const { data: characterListData } = useQuery<IComicsResult>(
     ["characterList"],
     charactersList
@@ -88,34 +141,20 @@ export default function Home() {
 
       {/* Section Comics */}
       <VStack w="full" position="relative" h="400px">
-        <VStack
+        <Box
           w="6xl"
           bg="white"
           py={8}
           px={4}
           position={"absolute"}
-          alignItems="center"
-          justifyContent="center"
           top={-16}
           zIndex={99}
         >
-          <Grid
-            display={"flex"}
-            height="300px"
-            templateColumns={{
-              sm: "repeat(2, 1fr)",
-              md: "repeat(4, 1fr)",
-              lg: "repeat(5, 1fr)",
-              xl: "repeat(6, 1fr)",
-              "2xl": "repeat(7, 1fr)",
-            }}
-            gap={6}
-            gridAutoFlow="row dense"
-          >
-            {comicsListIsLoading ? <ComicsSkeleton /> : null}
+          {comicsListIsLoading ? <ComicsSkeleton /> : null}
+          <Slider {...settingsComic}>
             {comicsListData?.data?.results.map((data) => (
               <Link to={`/${data.id}`} key={data.id}>
-                <GridItem>
+                <Box>
                   <VStack spacing={4} role="group">
                     <Box
                       w="40"
@@ -151,11 +190,11 @@ export default function Home() {
                       <Text color="gray.500">{data.modified.substr(0, 4)}</Text>
                     </VStack>
                   </VStack>
-                </GridItem>
+                </Box>
               </Link>
             ))}
-          </Grid>
-        </VStack>
+          </Slider>
+        </Box>
       </VStack>
 
       {/* Section3 SkewBox */}
