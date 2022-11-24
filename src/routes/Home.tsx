@@ -133,7 +133,7 @@ export default function Home() {
     useQuery<IComicsResult>([1, 18], comicsList);
 
   const { data: eventsListData, isLoading: eventsIsLoading } =
-    useQuery<IComicsResult>([1, 12], eventsList);
+    useQuery<IComicsResult>([1, 8], eventsList);
 
   const { data: seriesListData } = useQuery<IComicsResult>(
     ["seriesList"],
