@@ -1,26 +1,37 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-  VStack,
-  Text,
-  HStack,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Grid, GridItem, VStack, Text, Image } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+
 import { characterDetail } from "../api";
 
+interface IItem {
+  name: string;
+  resourceURI: string;
+}
 interface IImage {
   extension: string;
   path: string;
+}
+interface IComics {
+  available: number;
+  items: IItem[];
+}
+
+interface ISeries {
+  available: number;
+  items: IItem[];
 }
 
 interface ICharItems {
   id: number;
   modified: string;
   name: string;
+  description: string;
+  resourceURI: string;
   thumbnail: IImage;
+  comics: IComics;
+  series: ISeries;
+  stories: ISeries;
 }
 interface ICharResult {
   offset: number;
@@ -91,9 +102,11 @@ export default function CharacterDetail() {
                       fontWeight={600}
                       fontSize="2xl"
                     >
-                      hello
+                      {data?.data.results[0].name}
                     </Text>
-                    <Text color="gray.200">hello</Text>
+                    <Text color="gray.200">
+                      {data?.data.results[0].description}
+                    </Text>
                     <VStack w="full" alignItems={"flex-start"} spacing={0}>
                       <Text color="gray.100" fontWeight={600} fontSize="xl">
                         Published
@@ -104,9 +117,11 @@ export default function CharacterDetail() {
                     </VStack>
                     <VStack w="full" alignItems={"flex-start"} spacing={0}>
                       <Text color="gray.200" fontWeight={600} fontSize="xl">
-                        Creator
+                        ResourceURI
                       </Text>
-                      <VStack alignItems={"flex-start"}>hello</VStack>
+                      <Text color="rgba(255, 255, 255, 0.7)" fontSize={18}>
+                        {data?.data.results[0].resourceURI}
+                      </Text>
                     </VStack>
                   </VStack>
                 </GridItem>
@@ -115,8 +130,15 @@ export default function CharacterDetail() {
           </Box>
         </VStack>
 
-        <VStack w="full" h="auto" bg="gray.700" alignItems="center" py={16}>
-          <VStack w="6xl" alignItems={"flex-start"}>
+        <VStack
+          w="full"
+          h="auto"
+          bg="gray.700"
+          alignItems="center"
+          py={16}
+          spacing={16}
+        >
+          <VStack w="5xl" alignItems={"flex-start"}>
             <Text
               color="gray.100"
               textTransform={"uppercase"}
@@ -124,31 +146,86 @@ export default function CharacterDetail() {
               fontWeight="600"
               mb="4"
             >
-              the Characters
+              the Comics
             </Text>
 
-            <HStack spacing={4} h="200px">
-              {data?.data.results.map((item, index) => (
+            <VStack spacing={4}>
+              {data?.data.results[0].comics.items.map((item, index) => (
                 <VStack
+                  justifyContent={"flex-start"}
+                  alignItems="flex-start"
+                  spacing={0}
+                  w="full"
+                  h="full"
+                  key={index}
+                >
+                  <Text color="gray.100" fontWeight={600}>
+                    {item.name}
+                  </Text>
+                  <Text color="gray.300">{item.resourceURI}</Text>
+                </VStack>
+              ))}
+            </VStack>
+          </VStack>
+
+          <VStack w="5xl" alignItems={"flex-start"}>
+            <Text
+              color="gray.100"
+              textTransform={"uppercase"}
+              fontSize={24}
+              fontWeight="600"
+              mb="4"
+            >
+              the Series
+            </Text>
+
+            <VStack spacing={4}>
+              {data?.data.results[0].series.items.map((item, index) => (
+                <VStack
+                  spacing={0}
+                  alignItems="flex-start"
                   justifyContent={"flex-start"}
                   w="full"
                   h="full"
                   key={index}
                 >
-                  <Box w="24" h="24" overflow={"hidden"} rounded="full">
-                    <Image
-                      w="24"
-                      h="24"
-                      objectFit={"cover"}
-                      src={`${item.thumbnail.path}.${item.thumbnail.extension}`}
-                    />
-                  </Box>
-                  <Text w="24" color="gray.100" textAlign={"center"}>
+                  <Text color="gray.100" fontWeight={600}>
                     {item.name}
                   </Text>
+                  <Text color="gray.300">{item.resourceURI}</Text>
                 </VStack>
               ))}
-            </HStack>
+            </VStack>
+          </VStack>
+
+          <VStack w="5xl" alignItems={"flex-start"}>
+            <Text
+              color="gray.100"
+              textTransform={"uppercase"}
+              fontSize={24}
+              fontWeight="600"
+              mb="4"
+            >
+              the Stories
+            </Text>
+
+            <VStack spacing={4}>
+              {data?.data.results[0].stories.items.map((item, index) => (
+                <VStack
+                  justifyContent={"flex-start"}
+                  alignItems="flex-start"
+                  w="full"
+                  h="full"
+                  key={index}
+                  spacing={0}
+                >
+                  <Text color="gray.100" fontWeight={600}>
+                    {item.name}
+                  </Text>
+                  <Text color="gray.300">{item.resourceURI}</Text>
+                </VStack>
+              ))}
+            </VStack>
           </VStack>
         </VStack>
       </Box>

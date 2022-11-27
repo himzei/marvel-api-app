@@ -116,7 +116,7 @@ export default function Home() {
     slidesToScroll: 6,
     autoPlay: true,
     swipeToSlide: true,
-    autoPlaySpeed: 5000,
+
     nextArrow: (
       <Div>
         <MdOutlineArrowForwardIos />
