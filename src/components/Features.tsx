@@ -19,10 +19,11 @@ export default function Features() {
                 fontSize="20px"
                 letterSpacing={"-0.5px"}
               >
-                노마드코더 챌린지 과제
+                스마트웹앱 2기
               </Text>
               <Text color="gray.500">
-                https://nomadcoders.co/c/airbnb-challenge/lobby
+                영진직업전문학교 스마트웹앱 2기 <br />
+                리액트 수업
               </Text>
             </VStack>
           </HStack>
@@ -58,10 +59,10 @@ export default function Features() {
                 fontSize="20px"
                 letterSpacing={"-0.5px"}
               >
-                React + Django
+                React
               </Text>
               <Text color="gray.500">
-                React와 Django를 공부할 수 있는 노마드코더의 에어비앤비 수업
+                React + Typescript + Chakra UI를 활용한 마블페이지 제작
               </Text>
             </VStack>
           </HStack>
